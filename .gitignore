@@ -47,6 +47,8 @@ data/
 
 # Results
 results/
+evaluation_results/
+diagnoses/
 *.json
 
 # Model cache
