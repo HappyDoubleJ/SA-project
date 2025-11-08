@@ -14,27 +14,77 @@ DermLIP (Dermatology Language-Image Pretraining) 모델을 사용하여 피부 �
   - **DermLIP-ViT-B/16**: Vision Transformer 기반 (빠른 속도)
   - **DermLIP-PanDerm**: PanDerm 아키텍처 기반 (최고 성능)
 
-### 진단 가능한 질환 (12개)
+### 진단 가능한 질환 (46개)
 
-| 번호 | 질환명 (한국어) | 영문명 |
-|------|----------------|--------|
-| 1 | 여드름 | Acne Vulgaris |
-| 2 | 습진 (아토피 피부염) | Atopic Dermatitis / Eczema |
-| 3 | 건선 | Psoriasis |
-| 4 | 악성 흑색종 | Malignant Melanoma |
-| 5 | 기저세포암 | Basal Cell Carcinoma |
-| 6 | 지루성 각화증 | Seborrheic Keratosis |
-| 7 | 주사 (안면홍조) | Rosacea |
-| 8 | 백반증 | Vitiligo |
-| 9 | 헤르페스 | Herpes Simplex |
-| 10 | 사마귀 | Verruca / Warts |
-| 11 | 접촉성 피부염 | Contact Dermatitis |
-| 12 | 피부 진균 감염 | Tinea / Fungal Infection |
+#### 주요 피부암 및 전암성 병변
+- 악성 흑색종 (Malignant Melanoma)
+- 기저세포암 (Basal Cell Carcinoma)
+- 편평세포암 (Squamous Cell Carcinoma)
+- 일광 각화증 (Actinic Keratosis)
+
+#### 염증성 피부 질환
+- 여드름 (Acne Vulgaris)
+- 습진/아토피 피부염 (Atopic Dermatitis)
+- 건선 (Psoriasis)
+- 주사/안면홍조 (Rosacea)
+- 접촉성 피부염 (Contact Dermatitis)
+- 편평태선 (Lichen Planus)
+
+#### 감염성 질환
+- 헤르페스 (Herpes Simplex)
+- 대상포진 (Herpes Zoster)
+- 사마귀 (Warts)
+- 물사마귀 (Molluscum Contagiosum)
+- 피부 진균 감염/무좀 (Tinea)
+- 어루러기 (Pityriasis Versicolor)
+- 농가진 (Impetigo)
+- 봉와직염 (Cellulitis)
+- 옴 (Scabies)
+
+#### 알레르기 및 면역 질환
+- 두드러기 (Urticaria)
+- 혈관부종 (Angioedema)
+- 약물 발진 (Drug Eruption)
+- 다형홍반 (Erythema Multiforme)
+- 홍반성 루푸스 (Lupus Erythematosus)
+- 경피증 (Scleroderma)
+- 피부근염 (Dermatomyositis)
+- 천포창 (Pemphigus)
+- 수포성 유천포창 (Bullous Pemphigoid)
+
+#### 색소 질환
+- 백반증 (Vitiligo)
+- 기미 (Melasma)
+- 흑자/점 (Lentigo)
+- 모반 (Nevus)
+
+#### 양성 종양 및 성장물
+- 지루성 각화증 (Seborrheic Keratosis)
+- 체리 혈관종 (Cherry Angioma)
+- 연성 섬유종/쥐젖 (Skin Tag)
+- 지방종 (Lipoma)
+- 화농육아종 (Pyogenic Granuloma)
+- 포도주색 반점 (Port-Wine Stain)
+- 혈관종 (Hemangioma)
+
+#### 흉터 및 피부 변화
+- 켈로이드 (Keloid)
+- 비후성 반흔 (Hypertrophic Scar)
+- 모공각화증/닭살 (Keratosis Pilaris)
+
+#### 탈모 질환
+- 원형 탈모 (Alopecia Areata)
+- 남성형/여성형 탈모 (Androgenetic Alopecia)
+- 휴지기 탈모 (Telogen Effluvium)
+
+#### 기타
+- 장미색 비강진 (Pityriasis Rosea)
 
 ## 🚀 주요 기능
 
-- ✅ **AI 기반 진단**: DermLIP 모델을 사용한 피부 질환 진단
+- ✅ **AI 기반 진단**: DermLIP 모델을 사용한 46개 피부 질환 진단
 - ✅ **상세 정보 제공**: 각 질환의 증상, 영향받는 부위, 설명
+- ✅ **중증도 분류**: 각 질환별 중증도 단계 정보 제공
 - ✅ **다중 결과**: 상위 3~5개의 가능성 있는 질환 제시
 - ✅ **신뢰도 표시**: 각 진단의 신뢰도 퍼센트 제공
 - ✅ **시각화**: 이미지와 진단 결과를 그래프로 표시
@@ -153,6 +203,12 @@ python dermlip_diagnosis.py --help
    모낭과 피지선의 만성 염증성 질환입니다. 피지 과다 분비, 모공 막힘,
    박테리아 감염이 주요 원인이며, 주로 사춘기에 많이 발생하지만
    성인에게도 나타날 수 있습니다.
+
+📊 중증도 분류:
+   • 경증 (면포성)
+   • 중등도 (구진/농포성)
+   • 중증 (결절성)
+   • 최중증 (낭종성)
 
 ──────────────────────────────────────────────────────────────────
 
