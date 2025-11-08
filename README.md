@@ -1,30 +1,47 @@
-# DermLIP 피부 질환 진단 정확도 평가
+# DermLIP 피부 질환 진단 시스템
 
-DermLIP (Dermatology Language-Image Pretraining) 모델을 사용하여 피부 질환 이미지에 대한 진단 정확도를 평가하는 프로젝트입니다.
+DermLIP (Dermatology Language-Image Pretraining) 모델을 사용하여 피부 사진으로부터 질환을 진단하고, 증상, 영향받는 부위, 설명을 제공하는 AI 진단 도구입니다.
 
-## 프로젝트 소개
+## 📋 프로젝트 소개
 
-이 프로젝트는 최신 Vision-Language 모델인 DermLIP을 활용하여 피부 질환을 진단하고, 그 정확도를 평가합니다. DermLIP은 1백만 개 이상의 피부과 이미지-텍스트 쌍으로 훈련되어 390개 이상의 피부 질환을 인식할 수 있습니다.
+이 프로젝트는 최신 Vision-Language 모델인 DermLIP을 활용하여 피부 질환을 진단합니다. 사진을 입력하면 가능성 있는 질환들을 제시하고, 각 질환에 대한 상세 정보(증상, 부위, 설명)를 함께 제공합니다.
 
 ### DermLIP 모델 정보
 
-- **훈련 데이터**: Derm1M (1,029,761 이미지-텍스트 쌍)
-- **지원 질환**: 390개 피부 질환
+- **훈련 데이터**: Derm1M (1,029,761 피부 이미지-텍스트 쌍)
+- **커버리지**: 390개 이상의 피부 질환
 - **모델 종류**:
-  - DermLIP-ViT-B/16: Vision Transformer 기반 (빠른 속도)
-  - DermLIP-PanDerm: PanDerm 아키텍처 기반 (최고 성능)
+  - **DermLIP-ViT-B/16**: Vision Transformer 기반 (빠른 속도)
+  - **DermLIP-PanDerm**: PanDerm 아키텍처 기반 (최고 성능)
 
-### 주요 기능
+### 진단 가능한 질환 (12개)
 
-- ✅ Zero-shot 피부 질환 분류
-- ✅ 배치 단위 이미지 평가
-- ✅ 단일 이미지 진단
-- ✅ 정확도, 정밀도, 재현율, F1 스코어 계산
-- ✅ Confusion Matrix 시각화
-- ✅ 클래스별 성능 분석
-- ✅ Jupyter Notebook 및 Python 스크립트 지원
+| 번호 | 질환명 (한국어) | 영문명 |
+|------|----------------|--------|
+| 1 | 여드름 | Acne Vulgaris |
+| 2 | 습진 (아토피 피부염) | Atopic Dermatitis / Eczema |
+| 3 | 건선 | Psoriasis |
+| 4 | 악성 흑색종 | Malignant Melanoma |
+| 5 | 기저세포암 | Basal Cell Carcinoma |
+| 6 | 지루성 각화증 | Seborrheic Keratosis |
+| 7 | 주사 (안면홍조) | Rosacea |
+| 8 | 백반증 | Vitiligo |
+| 9 | 헤르페스 | Herpes Simplex |
+| 10 | 사마귀 | Verruca / Warts |
+| 11 | 접촉성 피부염 | Contact Dermatitis |
+| 12 | 피부 진균 감염 | Tinea / Fungal Infection |
 
-## 설치 방법
+## 🚀 주요 기능
+
+- ✅ **AI 기반 진단**: DermLIP 모델을 사용한 피부 질환 진단
+- ✅ **상세 정보 제공**: 각 질환의 증상, 영향받는 부위, 설명
+- ✅ **다중 결과**: 상위 3~5개의 가능성 있는 질환 제시
+- ✅ **신뢰도 표시**: 각 진단의 신뢰도 퍼센트 제공
+- ✅ **시각화**: 이미지와 진단 결과를 그래프로 표시
+- ✅ **리포트 생성**: JSON 및 텍스트 형식의 진단 리포트 자동 생성
+- ✅ **다양한 사용 방법**: Python 스크립트 및 Jupyter Notebook 지원
+
+## 📦 설치 방법
 
 ### 1. 저장소 클론
 
@@ -53,236 +70,243 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## 사용 방법
+## 💻 사용 방법
 
-### 방법 1: Jupyter Notebook 사용
+### 방법 1: Python 스크립트 사용 (권장)
 
-```bash
-jupyter notebook dermlip_diagnosis_evaluation.ipynb
-```
-
-노트북을 열고 셀을 순서대로 실행하면 됩니다.
-
-### 방법 2: Python 스크립트 사용
-
-#### CSV 파일에서 데이터 로드
+가장 간단하고 빠른 방법입니다.
 
 ```bash
-python evaluate_dermlip.py --data_csv data/labels.csv --output_dir results/
+# 기본 사용 (상위 3개 결과)
+python dermlip_diagnosis.py --image path/to/skin_image.jpg
+
+# 상위 5개 결과 보기
+python dermlip_diagnosis.py --image path/to/skin_image.jpg --top_k 5
+
+# 고성능 모델 사용 (PanDerm)
+python dermlip_diagnosis.py --image path/to/skin_image.jpg \
+    --model hf-hub:redlessone/DermLIP_PanDerm-base-w-PubMed-256
+
+# 파일 저장 없이 콘솔 출력만
+python dermlip_diagnosis.py --image path/to/skin_image.jpg --no_save
 ```
 
-CSV 파일 형식:
-```csv
-image_path,label
-data/images/acne/image1.jpg,0
-data/images/eczema/image2.jpg,1
+### 방법 2: Jupyter Notebook 사용
+
+대화형으로 사용하고 결과를 즉시 확인할 수 있습니다.
+
+```bash
+jupyter notebook dermlip_diagnosis.ipynb
+```
+
+노트북을 열고 셀을 순서대로 실행하세요:
+1. 라이브러리 설치 및 임포트
+2. 피부 질환 데이터베이스 로드
+3. 진단 시스템 클래스 정의
+4. 진단 시스템 초기화
+5. **이미지 경로 설정 후 진단 실행** ← 여기서 이미지 경로 입력
+
+### 명령줄 옵션
+
+```bash
+python dermlip_diagnosis.py --help
+```
+
+| 옵션 | 설명 | 기본값 |
+|------|------|--------|
+| `--image PATH` | 진단할 피부 이미지 경로 (필수) | - |
+| `--top_k N` | 상위 N개 결과 표시 | 3 |
+| `--model MODEL` | 사용할 DermLIP 모델 | ViT-B-16 |
+| `--output_dir PATH` | 결과 저장 디렉토리 | diagnoses/ |
+| `--device DEVICE` | 사용할 디바이스 (cuda/cpu) | cuda (가능시) |
+| `--no_save` | 파일 저장하지 않음 | False |
+
+## 📊 출력 결과
+
+### 콘솔 출력 예시
+
+```
+==================================================================
+🏥 진단 결과
+==================================================================
+
+[1위] 여드름 (Acne Vulgaris)
+└─ 신뢰도: 85.3%
+
+📍 주로 영향받는 부위:
+   • 얼굴
+   • 이마
+   • 뺨
+   • 턱
+   • 등
+   • 가슴
+
+🔍 주요 증상:
+   • 피부에 작은 붉은 돌기
+   • 화농성 병변 (고름이 찬 여드름)
+   • 블랙헤드와 화이트헤드 (면포)
+   • 피지 과다 분비로 인한 기름진 피부
+   • 염증 및 붓기
+   • 여드름 자국 또는 흉터
+
+📋 설명:
+   모낭과 피지선의 만성 염증성 질환입니다. 피지 과다 분비, 모공 막힘,
+   박테리아 감염이 주요 원인이며, 주로 사춘기에 많이 발생하지만
+   성인에게도 나타날 수 있습니다.
+
+──────────────────────────────────────────────────────────────────
+
+[2위] 주사 (Rosacea)
+└─ 신뢰도: 8.7%
+
 ...
 ```
 
-#### 폴더 구조에서 데이터 로드
+### 생성되는 파일
+
+진단을 실행하면 `diagnoses/` 디렉토리에 다음 파일들이 생성됩니다:
+
+```
+diagnoses/
+├── diagnosis_20250108_143022.json    # JSON 형식 진단 리포트
+├── diagnosis_20250108_143022.txt     # 텍스트 형식 진단 리포트
+└── diagnosis_20250108_143022.png     # 시각화 이미지
+```
+
+#### JSON 리포트 예시
+
+```json
+{
+  "timestamp": "20250108_143022",
+  "image_path": "skin_image.jpg",
+  "model": "hf-hub:redlessone/DermLIP_ViT-B-16",
+  "diagnoses": [
+    {
+      "rank": 1,
+      "confidence": 85.3,
+      "disease_name_ko": "여드름",
+      "disease_name_en": "Acne Vulgaris",
+      "affected_areas": ["얼굴", "이마", "뺨", "턱", "등", "가슴"],
+      "symptoms": [
+        "피부에 작은 붉은 돌기",
+        "화농성 병변 (고름이 찬 여드름)",
+        ...
+      ],
+      "description": "모낭과 피지선의 만성 염증성 질환입니다..."
+    }
+  ]
+}
+```
+
+## 🎯 사용 예시
+
+### 예시 1: 기본 진단
 
 ```bash
-python evaluate_dermlip.py --data_dir data/images/ --output_dir results/
+python dermlip_diagnosis.py --image examples/acne_sample.jpg
 ```
 
-폴더 구조:
-```
-data/images/
-├── acne/
-│   ├── image1.jpg
-│   ├── image2.jpg
-│   └── ...
-├── eczema/
-│   ├── image1.jpg
-│   └── ...
-└── ...
-```
-
-#### 단일 이미지 테스트
+### 예시 2: 더 많은 결과 보기
 
 ```bash
-python evaluate_dermlip.py --test_image path/to/image.jpg --output_dir results/
+python dermlip_diagnosis.py --image examples/rash_sample.jpg --top_k 5
 ```
 
-#### 고성능 모델 사용 (PanDerm)
+### 예시 3: 최고 성능 모델 사용
 
 ```bash
-python evaluate_dermlip.py \
-    --data_csv data/labels.csv \
+python dermlip_diagnosis.py \
+    --image examples/melanoma_sample.jpg \
     --model hf-hub:redlessone/DermLIP_PanDerm-base-w-PubMed-256 \
-    --output_dir results/
+    --top_k 3
 ```
 
-### 전체 옵션
+## 🖼️ 이미지 준비 팁
+
+더 정확한 진단을 위해 다음 사항을 권장합니다:
+
+### 촬영 권장사항
+- ✅ **선명한 사진**: 초점이 맞고 흔들리지 않은 사진
+- ✅ **충분한 조명**: 자연광 또는 밝은 실내 조명
+- ✅ **가까운 거리**: 병변 부위가 명확히 보이도록 촬영
+- ✅ **정면 촬영**: 병변을 정면에서 촬영
+- ✅ **배경 단순화**: 피부 부위만 보이도록 촬영
+
+### 피해야 할 것
+- ❌ 흐릿하거나 초점이 맞지 않은 사진
+- ❌ 너무 어둡거나 과다 노출된 사진
+- ❌ 너무 멀리서 찍은 사진
+- ❌ 강한 그림자가 있는 사진
+
+## 🔬 진단 결과 해석
+
+### 신뢰도 이해하기
+
+- **80% 이상**: 매우 높은 신뢰도, 해당 질환일 가능성이 높음
+- **50-80%**: 높은 신뢰도, 가능성이 있음
+- **30-50%**: 중간 신뢰도, 다른 진단도 고려 필요
+- **30% 미만**: 낮은 신뢰도, 참고용
+
+### 주의사항
+
+⚠️ **중요**: 이 도구는 AI 기반 예측이며 **참고용**입니다.
+
+- 이 진단 결과는 의사의 진단을 대체할 수 없습니다
+- 정확한 진단과 치료는 **반드시 피부과 전문의와 상담**하세요
+- 특히 피부암이 의심되는 경우 즉시 병원을 방문하세요
+- 여러 질환이 비슷한 증상을 보일 수 있습니다
+
+## 🛠️ 문제 해결
+
+### GPU 메모리 부족 오류
 
 ```bash
-python evaluate_dermlip.py --help
-```
-
-```
-옵션:
-  --data_csv PATH       평가 데이터 CSV 파일 경로
-  --data_dir PATH       이미지가 클래스별 폴더에 정리된 디렉토리
-  --test_image PATH     단일 이미지 테스트 경로
-  --model MODEL         사용할 DermLIP 모델 (기본: DermLIP_ViT-B-16)
-  --output_dir PATH     결과 저장 디렉토리 (기본: results/)
-  --batch_size N        배치 크기 (기본: 32)
-  --device DEVICE       사용할 디바이스 (cuda/cpu)
-```
-
-## 피부 질환 클래스
-
-현재 지원하는 10개 피부 질환 클래스 (실제 데이터에 맞게 수정 가능):
-
-| 클래스 ID | 질환명 | 설명 |
-|---------|--------|------|
-| 0 | Acne | 여드름 - 염증성 피부 질환 |
-| 1 | Eczema | 습진 - 가려운 붉은 피부 염증 |
-| 2 | Psoriasis | 건선 - 붉은 비늘 모양 피부 질환 |
-| 3 | Melanoma | 흑색종 - 악성 피부암 |
-| 4 | Basal Cell Carcinoma | 기저세포암 - 흔한 피부암 |
-| 5 | Seborrheic Keratosis | 지루성 각화증 - 양성 갈색 성장물 |
-| 6 | Rosacea | 주사 - 얼굴 홍조 및 혈관 확장 |
-| 7 | Vitiligo | 백반증 - 피부 색소 손실 |
-| 8 | Herpes | 헤르페스 - 바이러스성 수포 |
-| 9 | Warts | 사마귀 - HPV로 인한 작은 돌기 |
-
-**주의**: `evaluate_dermlip.py` 파일에서 `SKIN_DISEASE_CLASSES`와 `CLASS_DESCRIPTIONS`를 실제 데이터에 맞게 수정하세요.
-
-## 출력 결과
-
-평가를 실행하면 다음 파일들이 생성됩니다:
-
-```
-results/
-├── evaluation_results.json      # 평가 지표 (JSON)
-├── confusion_matrix.png         # Confusion Matrix 히트맵
-├── class_performance.png        # 클래스별 성능 막대 그래프
-└── single_prediction.png        # 단일 이미지 예측 결과 (--test_image 사용시)
-```
-
-### 평가 지표
-
-- **Accuracy (정확도)**: 전체 예측 중 올바른 예측의 비율
-- **Precision (정밀도)**: 양성으로 예측한 것 중 실제 양성의 비율
-- **Recall (재현율)**: 실제 양성 중 올바르게 예측한 비율
-- **F1 Score**: Precision과 Recall의 조화 평균
-
-## 데이터 준비 가이드
-
-### 1. 이미지 수집
-
-- 고품질의 피부 질환 이미지를 수집합니다.
-- 다양한 각도, 조명, 피부 톤을 포함하는 것이 좋습니다.
-- 이미지 형식: JPG, JPEG, PNG, BMP
-
-### 2. 레이블링
-
-각 이미지에 정확한 진단 레이블을 할당합니다.
-
-### 3. 데이터 구성
-
-**옵션 A: CSV 파일**
-```csv
-image_path,label
-/path/to/image1.jpg,0
-/path/to/image2.jpg,1
-```
-
-**옵션 B: 폴더 구조**
-```
-data/images/
-├── acne/
-├── eczema/
-├── psoriasis/
-└── ...
-```
-
-## 성능 최적화 팁
-
-### GPU 사용
-
-CUDA 지원 GPU가 있으면 자동으로 GPU를 사용합니다.
-
-```bash
-# GPU 확인
-python -c "import torch; print(torch.cuda.is_available())"
-```
-
-### 배치 크기 조정
-
-메모리에 따라 배치 크기를 조정하세요:
-
-```bash
-# GPU 메모리가 충분한 경우
-python evaluate_dermlip.py --data_csv data.csv --batch_size 64
-
-# GPU 메모리가 부족한 경우
-python evaluate_dermlip.py --data_csv data.csv --batch_size 16
-```
-
-### 모델 선택
-
-- **빠른 테스트**: `DermLIP_ViT-B-16` (기본값)
-- **최고 성능**: `DermLIP_PanDerm-base-w-PubMed-256`
-
-## 클래스 설명 커스터마이징
-
-더 나은 성능을 위해 클래스 설명을 상세하게 작성할 수 있습니다:
-
-```python
-CLASS_DESCRIPTIONS = [
-    "a clinical photo of acne vulgaris with comedones, papules, and pustules on oily skin",
-    "a dermatological image of atopic eczema showing erythematous, pruritic, and scaly patches",
-    # ... 나머지 클래스
-]
-```
-
-DermLIP은 임상적 용어와 상세한 설명으로 훈련되었으므로, 의학적으로 정확한 설명이 효과적입니다.
-
-## 문제 해결
-
-### CUDA Out of Memory 오류
-
-```bash
-# 배치 크기 감소
-python evaluate_dermlip.py --data_csv data.csv --batch_size 8
-
-# 또는 CPU 사용
-python evaluate_dermlip.py --data_csv data.csv --device cpu
+# CPU 사용
+python dermlip_diagnosis.py --image image.jpg --device cpu
 ```
 
 ### 모델 다운로드 실패
 
-인터넷 연결을 확인하고, Hugging Face Hub에 접근 가능한지 확인하세요.
+인터넷 연결을 확인하고, Hugging Face Hub 접근이 가능한지 확인하세요.
 
 ```bash
-# 수동으로 모델 다운로드
+# 모델 수동 다운로드 테스트
 python -c "import open_clip; open_clip.create_model_and_transforms('hf-hub:redlessone/DermLIP_ViT-B-16')"
 ```
 
 ### 이미지 로드 오류
 
 - 이미지 경로가 올바른지 확인
-- 이미지 파일이 손상되지 않았는지 확인
 - 지원 형식: JPG, JPEG, PNG, BMP
+- 파일이 손상되지 않았는지 확인
 
-## 참고 자료
+## 📚 참고 자료
 
-- **DermLIP GitHub**: https://github.com/SiyuanYan1/Derm1M
-- **Hugging Face Models**:
-  - https://huggingface.co/redlessone/DermLIP_ViT-B-16
-  - https://huggingface.co/redlessone/DermLIP_PanDerm-base-w-PubMed-256
+### DermLIP 프로젝트
+- **GitHub**: https://github.com/SiyuanYan1/Derm1M
 - **논문**: ICCV 2025 (Highlight)
 
-## 라이선스
+### Hugging Face 모델
+- **ViT-B/16**: https://huggingface.co/redlessone/DermLIP_ViT-B-16
+- **PanDerm**: https://huggingface.co/redlessone/DermLIP_PanDerm-base-w-PubMed-256
+
+## 📄 라이선스
 
 이 프로젝트는 연구 및 교육 목적으로 사용할 수 있습니다. DermLIP 모델과 Derm1M 데이터셋은 CC BY-NC-4.0 라이선스 하에 제공됩니다.
 
-## 기여
+## ⚖️ 면책 조항
+
+**이 도구는 연구 및 교육 목적으로만 사용되어야 합니다.**
+
+- 이 소프트웨어는 "있는 그대로" 제공되며, 어떠한 보증도 하지 않습니다
+- 실제 의료 진단에는 반드시 자격을 갖춘 의료 전문가의 판단이 필요합니다
+- 진단 결과에 따른 어떠한 의료적 결정도 전문의와 상담 후 내려야 합니다
+- 개발자는 이 도구의 사용으로 인한 어떠한 결과에 대해서도 책임지지 않습니다
+
+## 🤝 기여
 
 버그 리포트, 기능 제안, Pull Request를 환영합니다!
 
-## 면책 조항
+---
 
-이 도구는 연구 및 교육 목적으로만 사용되어야 합니다. 실제 의료 진단에는 반드시 자격을 갖춘 의료 전문가의 판단이 필요합니다.
+**Made with DermLIP** | 피부 건강을 위한 AI 진단 도구
